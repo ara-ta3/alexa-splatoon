@@ -1,12 +1,32 @@
 import * as Alexa from "alexa-sdk";
+import * as request from "request";
+import moment = require("moment");
 
-const handler = (event: any, context: any, _) => {
+let cache: JsonResponseBody = null;
+
+const handler = async (event: any, context: any, _: Function) => {
+  const client = new Spla2APIClientImpl(request, process.env.USER_AGENT);
+  if (cache === null) {
+    cache = await client.getSchedule();
+  }
   const handlers = {
     LaunchRequest: function() {
       this.emit("StageIntent");
     },
     StageIntent: function() {
-      this.emit(":tell", "これはテストだよ");
+      const schedules = cache.result.gachi;
+      const current = schedules.find(s => isCurrentRule(s, moment()));
+      if (current === undefined) {
+        this.emit(":tell", "あれれ、今のガチマがないよ");
+      } else {
+        const gachi = `今のガチマは${
+          current.rule
+        }で、ステージは${current.maps.join("と")}だよ。`;
+        const league = `そして、リグマは${
+          current.rule
+        }で、ステージは${current.maps.join("と")}だよ。`;
+        this.emit(":tell", gachi + league);
+      }
     },
     "AMAZON.HelpIntent": function() {
       this.emit(
@@ -24,9 +44,76 @@ const handler = (event: any, context: any, _) => {
   };
 
   const alexa = Alexa.handler(event, context);
-  alexa.APP_ID = process.env.ALEXA_APP_ID;
+  alexa.appId = process.env.ALEXA_APP_ID;
   alexa.registerHandlers(handlers);
   alexa.execute();
 };
 
 export { handler };
+
+type RequestAPI = request.RequestAPI<
+  request.Request,
+  request.CoreOptions,
+  request.RequiredUriUrl
+>;
+
+const APIEndpoint = "https://spla2.yuu26.com";
+
+export interface JsonResponseBody {
+  result: {
+    regular: Array<Schedule>;
+    gachi: Array<Schedule>;
+    league: Array<Schedule>;
+  };
+}
+
+export interface Schedule {
+  start: string;
+  end: string;
+  rule: string;
+  maps: Array<string>;
+}
+
+export interface Spla2APIClient {
+  getSchedule(): Promise<JsonResponseBody>;
+}
+
+export class Spla2APIClientImpl implements Spla2APIClient {
+  private request: RequestAPI;
+  private userAgent: string;
+  constructor(request: RequestAPI, userAgent: string) {
+    this.request = request;
+    this.userAgent = userAgent;
+  }
+
+  async getSchedule(): Promise<JsonResponseBody> {
+    const body = await this.get(`${APIEndpoint}/schedule`);
+    return JSON.parse(body);
+  }
+
+  private get(url: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      this.request(
+        {
+          url: url,
+          method: "GET",
+          headers: {
+            "User-Agent": this.userAgent
+          }
+        },
+        (error, response, body) => {
+          if (!error && response.statusCode === 200) {
+            resolve(body);
+          } else {
+            reject(response);
+          }
+        }
+      );
+    });
+  }
+}
+function isCurrentRule(schedule: Schedule, current: moment.Moment): boolean {
+  const start = moment(schedule.start);
+  const end = moment(schedule.end);
+  return current.isBetween(start, end);
+}
