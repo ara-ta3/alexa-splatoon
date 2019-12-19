@@ -10,7 +10,7 @@ install:
 compile:
 	$(TSC) index.ts
 
-zip: install
+zip: install compile
 	zip -r $(DIST) index.js node_modules 
 
 deploy: zip
