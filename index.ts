@@ -14,17 +14,21 @@ const handler = async (event: any, context: any, _: Function) => {
       this.emit("StageIntent");
     },
     StageIntent: function() {
-      const schedules = cache.result.gachi;
-      const current = schedules.find(s => isCurrentRule(s, moment()));
-      if (current === undefined) {
-        this.emit(":tell", "あれれ、今のガチマがないよ");
+      const currentGachi = cache.result.gachi.find(s =>
+        isCurrentRule(s, moment())
+      );
+      const currentLeague = cache.result.league.find(s =>
+        isCurrentRule(s, moment())
+      );
+      if (currentGachi === undefined || currentLeague === undefined) {
+        this.emit(":tell", "あれれ、今のガチマかリグマがないよ");
       } else {
         const gachi = `今のガチマは${
-          current.rule
-        }で、ステージは${current.maps.join("と")}だよ。`;
+          currentGachi.rule
+        }で、ステージは${currentGachi.maps.join("と")}だよ。`;
         const league = `そして、リグマは${
-          current.rule
-        }で、ステージは${current.maps.join("と")}だよ。`;
+          currentLeague.rule
+        }で、ステージは${currentLeague.maps.join("と")}だよ。`;
         this.emit(":tell", gachi + league);
       }
     },
