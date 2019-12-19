@@ -1,10 +1,14 @@
 NPM=npm
 AWS=aws
+TSC=./node_modules/.bin/tsc
 
 DIST=lambda.zip
 
 install:
 	$(NPM) install
+
+compile:
+	$(TSC) index.ts
 
 zip: install
 	zip -r $(DIST) index.js node_modules 

@@ -18,5 +18,9 @@
   "homepage": "https://github.com/ara-ta3/alexa-splatoon#readme",
   "dependencies": {
     "alexa-sdk": "^1.0.25"
+  },
+  "devDependencies": {
+    "@types/node": "^12.12.21",
+    "typescript": "^3.7.3"
   }
 }
