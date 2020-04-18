@@ -11,7 +11,7 @@ const handler = async (event: any, context: any, _: Function) => {
   }
   const handlers = {
     LaunchRequest: function() {
-      this.emit("StageIntent");
+      this.emit("AMAZON.HelpIntent");
     },
     StageIntent: function() {
       const currentGachi = cache.result.gachi.find(s =>
@@ -32,11 +32,28 @@ const handler = async (event: any, context: any, _: Function) => {
         this.emit(":tell", gachi + league);
       }
     },
+    NextIntent: function() {
+      const currentGachi = cache.result.gachi.find(s =>
+          isNextRule(s, moment())
+      );
+      const currentLeague = cache.result.league.find(s =>
+          isNextRule(s, moment())
+      );
+      if (currentGachi === undefined || currentLeague === undefined) {
+        this.emit(":tell", "あれれ、今のガチマかリグマがないよ");
+      } else {
+        const text = `今のガチマは${
+            currentGachi.rule
+        }で、ステージは${currentGachi.maps.join("と")}だよ。そして、リグマは${
+            currentLeague.rule
+        }で、ステージは${currentLeague.maps.join("と")}だよ。`;
+        this.emit(":tell", text);
+      }
+    },
     "AMAZON.HelpIntent": function() {
       this.emit(
         ":ask",
-        "ステージを聞きたい時は「ステージを教えて」と、終わりたい時は「おしまい」と言ってください。どうしますか？",
-        "どうしますか？"
+        "ステージを聞きたい時は「今のステージを教えて」か「次のステージを教えて」と、終わりたい時は「おしまい」と言ってください。どうしますか？",
       );
     },
     "AMAZON.CancelIntent": function() {
@@ -120,4 +137,11 @@ function isCurrentRule(schedule: Schedule, current: moment.Moment): boolean {
   const start = moment(schedule.start);
   const end = moment(schedule.end);
   return current.isBetween(start, end);
+}
+
+function isNextRule(schedule: Schedule, current: moment.Moment): boolean {
+  const start = moment(schedule.start);
+  const end = moment(schedule.end);
+  const next = current.add(2, 'h')
+  return next.isBetween(start, end);
 }
