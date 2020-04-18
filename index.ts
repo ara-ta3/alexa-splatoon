@@ -21,8 +21,18 @@ const handler = async (event: any, context: any, _: Function) => {
       } else {
         const gachiMap = gachi.maps.join("と");
         const leagueMap = league.maps.join("と");
-        const text = `今のガチマは${gachi.rule}で、ステージは${gachiMap}だよ。そして、リグマは${league.rule}で、ステージは${leagueMap}だよ。`;
-        this.emit(":tell", text);
+        const text = `今のガチマは${gachi.rule}で、ステージは${gachiMap}だよ。リグマは${league.rule}で、ステージは${leagueMap}だよ。`;
+        this.response.speak(text);
+        this.response.cardRenderer(
+          "今のガチマとリグマ",
+          [
+            `${gachi.rule}`,
+            gachi.maps.map((x) => `- ${x}`).join("\n"),
+            `${league.rule}`,
+            league.maps.map((x) => `- ${x}`).join("\n"),
+          ].join("\n")
+        );
+        this.emit(":responseReady");
       }
     },
     NextIntent: function () {
@@ -35,8 +45,18 @@ const handler = async (event: any, context: any, _: Function) => {
         const gachiMap = gachi.maps.join("と");
         const leagueMap = league.maps.join("と");
         const [begin, end] = stageRange(nextTime);
-        const text = `次の${begin}時から${end}時までのガチマは${gachi.rule}で、ステージは${gachiMap}だよ。そして、リグマは${league.rule}で、ステージは${leagueMap}だよ。`;
-        this.emit(":tell", text);
+        const text = `次の${begin}時から${end}時までのガチマは${gachi.rule}で、ステージは${gachiMap}だよ。リグマは${league.rule}で、ステージは${leagueMap}だよ。`;
+        this.response.speak(text);
+        this.response.cardRenderer(
+          "次のガチマとリグマ",
+          [
+            `${gachi.rule}`,
+            gachi.maps.map((x) => `- ${x}`).join("\n"),
+            `${league.rule}`,
+            league.maps.map((x) => `- ${x}`).join("\n"),
+          ].join("\n")
+        );
+        this.emit(":responseReady");
       }
     },
     "AMAZON.HelpIntent": function () {
