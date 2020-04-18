@@ -10,58 +10,47 @@ const handler = async (event: any, context: any, _: Function) => {
     cache = await client.getSchedule();
   }
   const handlers = {
-    LaunchRequest: function() {
+    LaunchRequest: function () {
       this.emit("AMAZON.HelpIntent");
     },
-    StageIntent: function() {
-      const currentGachi = cache.result.gachi.find(s =>
-        isCurrentRule(s, moment())
-      );
-      const currentLeague = cache.result.league.find(s =>
-        isCurrentRule(s, moment())
-      );
-      if (currentGachi === undefined || currentLeague === undefined) {
+    StageIntent: function () {
+      const gachi = cache.result.gachi.find((s) => isTargetRule(s, moment()));
+      const league = cache.result.league.find((s) => isTargetRule(s, moment()));
+      if (gachi === undefined || league === undefined) {
         this.emit(":tell", "あれれ、今のガチマかリグマがないよ");
       } else {
-        const gachi = `今のガチマは${
-          currentGachi.rule
-        }で、ステージは${currentGachi.maps.join("と")}だよ。`;
-        const league = `そして、リグマは${
-          currentLeague.rule
-        }で、ステージは${currentLeague.maps.join("と")}だよ。`;
-        this.emit(":tell", gachi + league);
-      }
-    },
-    NextIntent: function() {
-      const currentGachi = cache.result.gachi.find(s =>
-          isNextRule(s, moment())
-      );
-      const currentLeague = cache.result.league.find(s =>
-          isNextRule(s, moment())
-      );
-      if (currentGachi === undefined || currentLeague === undefined) {
-        this.emit(":tell", "あれれ、今のガチマかリグマがないよ");
-      } else {
-        const text = `今のガチマは${
-            currentGachi.rule
-        }で、ステージは${currentGachi.maps.join("と")}だよ。そして、リグマは${
-            currentLeague.rule
-        }で、ステージは${currentLeague.maps.join("と")}だよ。`;
+        const gachiMap = gachi.maps.join("と");
+        const leagueMap = league.maps.join("と");
+        const text = `今のガチマは${gachi.rule}で、ステージは${gachiMap}だよ。そして、リグマは${league.rule}で、ステージは${leagueMap}だよ。`;
         this.emit(":tell", text);
       }
     },
-    "AMAZON.HelpIntent": function() {
+    NextIntent: function () {
+      const nextTime = next(moment());
+      const gachi = cache.result.gachi.find((s) => isTargetRule(s, nextTime));
+      const league = cache.result.league.find((s) => isTargetRule(s, nextTime));
+      if (gachi === undefined || league === undefined) {
+        this.emit(":tell", "あれれ、今のガチマかリグマがないよ");
+      } else {
+        const gachiMap = gachi.maps.join("と");
+        const leagueMap = league.maps.join("と");
+        const [begin, end] = stageRange(nextTime);
+        const text = `次の${begin}時から${end}時までのガチマは${gachi.rule}で、ステージは${gachiMap}だよ。そして、リグマは${league.rule}で、ステージは${leagueMap}だよ。`;
+        this.emit(":tell", text);
+      }
+    },
+    "AMAZON.HelpIntent": function () {
       this.emit(
         ":ask",
-        "ステージを聞きたい時は「今のステージを教えて」か「次のステージを教えて」と、終わりたい時は「おしまい」と言ってください。どうしますか？",
+        "ステージを聞きたい時は「今のステージを教えて」か「次のステージを教えて」と、終わりたい時は「おしまい」と言ってください。どうしますか？"
       );
     },
-    "AMAZON.CancelIntent": function() {
+    "AMAZON.CancelIntent": function () {
       this.emit(":tell", "さようなら");
     },
-    "AMAZON.StopIntent": function() {
+    "AMAZON.StopIntent": function () {
       this.emit(":tell", "さようなら");
-    }
+    },
   };
 
   const alexa = Alexa.handler(event, context);
@@ -119,8 +108,8 @@ export class Spla2APIClientImpl implements Spla2APIClient {
           url: url,
           method: "GET",
           headers: {
-            "User-Agent": this.userAgent
-          }
+            "User-Agent": this.userAgent,
+          },
         },
         (error, response, body) => {
           if (!error && response.statusCode === 200) {
@@ -133,15 +122,17 @@ export class Spla2APIClientImpl implements Spla2APIClient {
     });
   }
 }
-function isCurrentRule(schedule: Schedule, current: moment.Moment): boolean {
+function isTargetRule(schedule: Schedule, current: moment.Moment): boolean {
   const start = moment(schedule.start);
   const end = moment(schedule.end);
   return current.isBetween(start, end);
 }
 
-function isNextRule(schedule: Schedule, current: moment.Moment): boolean {
-  const start = moment(schedule.start);
-  const end = moment(schedule.end);
-  const next = current.add(2, 'h')
-  return next.isBetween(start, end);
+function next(current: moment.Moment): moment.Moment {
+  return current.clone().add(2, "h");
+}
+
+function stageRange(current: moment.Moment): [number, number] {
+  const h = current.hour();
+  return h % 2 === 0 ? [h - 1, h + 1] : [h, h + 2];
 }
