@@ -45,7 +45,11 @@ const handler = async (event: any, context: any, _: Function) => {
         moment(),
         (text: AlexaResponse) => {
           this.response.speak(text.speakText);
-          this.response.cardRenderer(text.cardTitle, text.cardText);
+          text.cardImage === undefined
+            ? this.response.cardRenderer(text.cardTitle, text.cardText)
+            : this.response.cardRenderer(text.cardTitle, text.cardText, {
+                largeImageUrl: text.cardImage,
+              });
           this.emit(":responseReady");
         },
         () => {
@@ -58,7 +62,11 @@ const handler = async (event: any, context: any, _: Function) => {
         next(moment()),
         (text: AlexaResponse) => {
           this.response.speak(text.speakText);
-          this.response.cardRenderer(text.cardTitle, text.cardText);
+          text.cardImage === undefined
+            ? this.response.cardRenderer(text.cardTitle, text.cardText)
+            : this.response.cardRenderer(text.cardTitle, text.cardText, {
+                largeImageUrl: text.cardImage,
+              });
           this.emit(":responseReady");
         },
         () => {
@@ -67,10 +75,14 @@ const handler = async (event: any, context: any, _: Function) => {
       );
     },
     ShakeIntent: function () {
-      const shake = shakeCache.result.shift();
-      if (shake === undefined) {
+      if (shakeCache === null || shakeCache.result.length === 0) {
         this.emit(":tell", "あれ、シャケのルールが取得できてないよ");
       }
+      const shake = shakeCache.result.reduce((prev, current) => {
+        const prevStart = moment(prev.start);
+        const currentStart = moment(current.start);
+        return prevStart.isBefore(currentStart) ? prev : current;
+      });
 
       const start = moment(shake.start);
       const end = moment(shake.end);
@@ -81,7 +93,7 @@ const handler = async (event: any, context: any, _: Function) => {
 
       const weaponText = shake.weapons
         .map((w) => {
-          return w.name === "?" ? "はてな" : w.name;
+          return w.name === "？" ? "はてな" : w.name;
         })
         .join("、");
       const speakText =

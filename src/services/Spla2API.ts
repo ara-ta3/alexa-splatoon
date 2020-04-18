@@ -21,6 +21,9 @@ export interface Schedule {
   end: string;
   rule: string;
   maps: Array<string>;
+  maps_ex: {
+    image: string
+  }[];
 }
 
 export interface ShakeResponseBody {
