@@ -1,17 +1,20 @@
 import * as Alexa from "alexa-sdk";
 import * as request from "request";
-import moment = require("moment");
-import { JsonResponseBody, Spla2APIClientImpl } from "./src/services/Spla2API";
-import { isTargetRule, next, stageRange } from "./src/Util";
+import {
+  JsonResponseBody,
+  ShakeResponseBody,
+  Spla2APIClientImpl,
+} from "./src/services/Spla2API";
+import { isTargetRule, next } from "./src/Util";
 import { AlexaResponse, gachiAndLeagueText } from "./src/View";
+import moment = require("moment");
 
 let cache: JsonResponseBody = null;
+let shakeCache: ShakeResponseBody = null;
 
 const handler = async (event: any, context: any, _: Function) => {
   const client = new Spla2APIClientImpl(request, process.env.USER_AGENT);
-  if (cache === null) {
-    cache = await client.getSchedule();
-  }
+
   const ruleStageHandle = (
     current: moment.Moment,
     onSuccess: (text: AlexaResponse) => void,
@@ -26,8 +29,15 @@ const handler = async (event: any, context: any, _: Function) => {
       onSuccess(text);
     }
   };
+  if (cache === null) {
+    cache = await client.getSchedule();
+  }
+
+  if (shakeCache === null) {
+    shakeCache = await client.getShake();
+  }
   const handlers = {
-    LaunchRequest: function () {
+    LaunchRequest: async function () {
       this.emit("AMAZON.HelpIntent");
     },
     StageIntent: function () {
@@ -56,10 +66,43 @@ const handler = async (event: any, context: any, _: Function) => {
         }
       );
     },
+    ShakeIntent: function () {
+      const shake = shakeCache.result.shift();
+      if (shake === undefined) {
+        this.emit(":tell", "あれ、シャケのルールが取得できてないよ");
+      }
+
+      const start = moment(shake.start);
+      const end = moment(shake.end);
+      const heldNow = moment().isBetween(start, end);
+      const heldText = heldNow
+        ? `シャケは今開催中`
+        : `シャケは${start.format("M月D日のH時から")}`;
+
+      const weaponText = shake.weapons
+        .map((w) => {
+          return w.name === "?" ? "はてな" : w.name;
+        })
+        .join("、");
+      const speakText =
+        heldText +
+        `でステージは${shake.stage.name}だよ。武器は${weaponText}だよ`;
+      this.response.speak(speakText);
+      this.response.cardRenderer(
+        `${shake.stage.name} ${start.format("M/D H:00")} ~ ${end.format(
+          "M/D H:00"
+        )}`,
+        shake.weapons.map((w) => `- ${w.name}`).join("\n"),
+        {
+          largeImageUrl: shake.stage.image,
+        }
+      );
+      this.emit(":responseReady");
+    },
     "AMAZON.HelpIntent": function () {
       this.emit(
         ":ask",
-        "ステージを聞きたい時は「今のステージを教えて」か「次のステージを教えて」と、終わりたい時は「おしまい」と言ってください。どうしますか？"
+        "ステージを聞きたい時は「今のステージを教えて」か「次のステージを教えて」と、シャケを聞きたいときは「シャケを教えて」と、終わりたい時は「おしまい」と言ってください。どうしますか？"
       );
     },
     "AMAZON.CancelIntent": function () {

@@ -16,7 +16,9 @@ export function gachiAndLeagueText(
   const gachiMap = gachi.maps.join("と");
   const leagueMap = league.maps.join("と");
   const [begin, end] = stageRange(currentTime);
-  const text = `${begin}時から${end}時までのガチマは${gachi.rule}で、ステージは${gachiMap}だよ。リグマは${league.rule}で、ステージは${leagueMap}だよ。`;
+  const start =
+    moment() < currentTime ? `${begin}時から${end}時まで` : `${end}時まで`;
+  const text = `${start}のガチマは${gachi.rule}で、ステージは${gachiMap}だよ。リグマは${league.rule}で、ステージは${leagueMap}だよ。`;
   return {
     speakText: text,
     cardTitle: `${begin}時 ~ ${end}時のガチマとリグマ`,

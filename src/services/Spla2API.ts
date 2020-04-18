@@ -23,6 +23,22 @@ export interface Schedule {
   maps: Array<string>;
 }
 
+export interface ShakeResponseBody {
+  result: ShakeSchedule[];
+}
+
+export interface ShakeSchedule {
+  start: string;
+  end: string;
+  stage: {
+    image: string;
+    name: string;
+  };
+  weapons: {
+    name: string;
+  }[];
+}
+
 export interface Spla2APIClient {
   getSchedule(): Promise<JsonResponseBody>;
 }
@@ -37,6 +53,11 @@ export class Spla2APIClientImpl implements Spla2APIClient {
 
   async getSchedule(): Promise<JsonResponseBody> {
     const body = await this.get(`${APIEndpoint}/schedule`);
+    return JSON.parse(body);
+  }
+
+  async getShake(): Promise<ShakeResponseBody> {
+    const body = await this.get(`${APIEndpoint}/coop/schedule`);
     return JSON.parse(body);
   }
 
