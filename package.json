@@ -25,6 +25,7 @@
     "@types/alexa-sdk": "^1.1.2",
     "@types/node": "^12.12.21",
     "@types/request": "^2.48.4",
+    "prettier": "^2.0.4",
     "typescript": "^3.7.3"
   }
 }
