@@ -4,13 +4,15 @@ TSC=./node_modules/.bin/tsc
 
 DIST=lambda.zip
 
+all: install compile zip deploy
+
 install:
 	$(NPM) install
 
 compile:
 	$(NPM) run compile
 
-zip: install compile
+zip:
 	zip -r $(DIST) index.js node_modules src
 
 deploy: zip
