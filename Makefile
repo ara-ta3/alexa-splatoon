@@ -8,7 +8,7 @@ install:
 	$(NPM) install
 
 compile:
-	$(TSC) index.ts
+	$(NPM) run compile
 
 zip: install compile
 	zip -r $(DIST) index.js node_modules src
