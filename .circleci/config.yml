@@ -11,7 +11,36 @@ jobs:
           steps:
             - run: npm install
             - run: npm run compile
+            - run: npm install --production
+            - persist_to_workspace:
+                root: ~/repo
+                paths:
+                  - index.js
+                  - node_modules
+                  - src
+ deploy:
+    docker:
+      - image: circleci/python:3.7
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run: sudo apt-get -y update
+      - run:
+          name: Install some libraries
+          command: |
+              which aws || pip install --user awscli
+      - attach_workspace:
+          at: ~/repo
+
+      - deploy:
+          name: Deploy Production
+          command: |
+              make deploy
 workflows:
     build-and-test:
       jobs:
         - build-and-test
+        - deploy:
+            filters:
+              branches:
+                only: master
