@@ -1,6 +1,8 @@
 version: 2.1
+
 orbs:
   node: circleci/node@1.1.6
+
 jobs:
   build-and-test:
     executor:
@@ -18,29 +20,23 @@ jobs:
                   - index.js
                   - node_modules
                   - src
- deploy:
+  deploy:
     docker:
       - image: circleci/python:3.7
     working_directory: ~/repo
     steps:
       - checkout
       - run: sudo apt-get -y update
-      - run:
-          name: Install some libraries
-          command: |
-              which aws || pip install --user awscli
+      - run: which aws || pip install --user awscli
       - attach_workspace:
           at: ~/repo
+      - run: make deploy
 
-      - deploy:
-          name: Deploy Production
-          command: |
-              make deploy
 workflows:
     build-and-test:
       jobs:
         - build-and-test
         - deploy:
             filters:
-              branches:
-                only: master
+                branches:
+                    only: master
