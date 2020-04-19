@@ -3,10 +3,10 @@ orbs:
   node: circleci/node@2.0.2
 jobs:
   build-and-test:
+    executor:
+      name: node/default
+      tag: '12'
     working_directory: ~/repo
-    docker:
-      # https://circleci.com/docs/ja/2.0/docker-image-tags.json
-      - image: circleci/node:12.14.0
     steps:
       - checkout
       - node/install-packages
