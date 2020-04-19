@@ -15,7 +15,7 @@ jobs:
             - run: npm run compile
             - run: npm install --production
             - persist_to_workspace:
-                root: ~/repo
+                root: ~/project
                 paths:
                   - index.js
                   - node_modules
@@ -29,7 +29,7 @@ jobs:
       - run: sudo apt-get -y update
       - run: which aws || pip install --user awscli
       - attach_workspace:
-          at: ~/repo
+          at: ~/project
       - run: make deploy
 
 workflows:
