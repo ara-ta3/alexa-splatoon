@@ -28,6 +28,12 @@ jobs:
       - checkout
       - run: sudo apt-get -y update
       - run: which aws || pip install --user awscli
+      - run:
+          name: Setup AWS CLI
+          command: |
+              mkdir -p $HOME/.aws
+              echo [default] | tee -a $HOME/.aws/config
+              echo region=ap-northeast-1|tee -a $HOME/.aws/config
       - attach_workspace:
           at: ~/project
       - run: make deploy
