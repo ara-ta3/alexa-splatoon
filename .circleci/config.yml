@@ -35,7 +35,7 @@ jobs:
               echo [default] | tee -a $HOME/.aws/config
               echo region=ap-northeast-1|tee -a $HOME/.aws/config
       - attach_workspace:
-          at: ~/project
+          at: ~/repo
       - run: make deploy
 
 workflows:
