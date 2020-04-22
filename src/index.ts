@@ -1,13 +1,13 @@
 import * as Alexa from "alexa-sdk";
 import * as request from "request";
+import * as moment from "moment";
 import {
   JsonResponseBody,
   ShakeResponseBody,
   Spla2APIClientImpl,
-} from "./src/services/Spla2API";
-import { isTargetRule, next } from "./src/Util";
-import { AlexaResponse, gachiAndLeagueText } from "./src/View";
-import moment = require("moment");
+} from "./services/Spla2API";
+import { isTargetRule, next } from "./Util";
+import { AlexaResponse, gachiAndLeagueText } from "./View";
 
 let cache: JsonResponseBody = null;
 let shakeCache: ShakeResponseBody = null;
