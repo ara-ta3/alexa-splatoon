@@ -1,5 +1,5 @@
 import * as moment from "moment";
-import { Schedule } from "./services/Spla2API";
+import { Schedule, ShakeSchedule } from "./services/Spla2API";
 import { stageRange } from "./Util";
 
 export interface AlexaResponse {
@@ -7,6 +7,32 @@ export interface AlexaResponse {
   cardTitle: string;
   cardText: string;
   cardImage?: string;
+}
+
+export function shakeText(shake: ShakeSchedule): AlexaResponse {
+  const start = moment(shake.start);
+  const end = moment(shake.end);
+  const heldNow = moment().isBetween(start, end);
+  const heldText = heldNow
+    ? `シャケは今開催中`
+    : `シャケは${start.format("M月D日のH時から")}`;
+
+  const weaponText = shake.weapons
+    .map((w) => {
+      return w.name === "？" ? "はてな" : w.name;
+    })
+    .join("、");
+  const speakText =
+    heldText + `でステージは${shake.stage.name}だよ。武器は${weaponText}だよ`;
+
+  return {
+    speakText,
+    cardTitle: `${shake.stage.name} ${start.format("M/D H:00")} ~ ${end.format(
+      "M/D H:00"
+    )}`,
+    cardText: shake.weapons.map((w) => `- ${w.name}`).join("\n"),
+    cardImage: shake.stage.image,
+  };
 }
 
 export function gachiAndLeagueText(
