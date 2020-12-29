@@ -4,10 +4,15 @@ TSC=./node_modules/.bin/tsc
 
 DIST=lambda.zip
 
+.PHONY: test
+
 all: install compile zip deploy
 
 install:
 	$(NPM) install
+
+test:
+	$(NPM) run test
 
 compile:
 	$(NPM) run compile
