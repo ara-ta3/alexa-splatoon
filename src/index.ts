@@ -7,7 +7,7 @@ import {
   Spla2APIClientImpl,
 } from "./services/Spla2API";
 import { isTargetRule, next } from "./Util";
-import { AlexaResponse, gachiAndLeagueText } from "./View";
+import { gachiAndLeagueText } from "./View";
 import { HandlerInput, RequestHandler } from "ask-sdk-core";
 import { CustomSkill } from "ask-sdk-core/dist/skill/CustomSkill";
 
