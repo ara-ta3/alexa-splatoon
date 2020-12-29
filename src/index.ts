@@ -1,5 +1,4 @@
 import { SkillBuilders } from "ask-sdk-core";
-import * as request from "request";
 import * as moment from "moment";
 import {
   JsonResponseBody,
@@ -126,7 +125,7 @@ const HelpIntentHandler: RequestHandler = {
 };
 
 const handler = async (event: any, context: any, _: Function) => {
-  const client = new Spla2APIClientImpl(request, process.env.USER_AGENT);
+  const client = new Spla2APIClientImpl(process.env.USER_AGENT);
 
   if (cache === null) {
     cache = await client.getSchedule();
