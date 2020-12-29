@@ -7,7 +7,7 @@ export function isTargetRule(
 ): boolean {
   const start = dayjs(schedule.start);
   const end = dayjs(schedule.end);
-  return current.isAfter(end) && current.isBefore(end)
+  return current.isAfter(start) && current.isBefore(end)
 }
 
 export function next(current: dayjs.Dayjs): dayjs.Dayjs {
