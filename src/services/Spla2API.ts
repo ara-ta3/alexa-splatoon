@@ -1,12 +1,6 @@
-import * as request from "request";
+import fetch, { Response } from 'node-fetch'
 
 const APIEndpoint = "https://spla2.yuu26.com";
-
-type RequestAPI = request.RequestAPI<
-  request.Request,
-  request.CoreOptions,
-  request.RequiredUriUrl
->;
 
 export interface JsonResponseBody {
   result: {
@@ -47,41 +41,31 @@ export interface Spla2APIClient {
 }
 
 export class Spla2APIClientImpl implements Spla2APIClient {
-  private request: RequestAPI;
   private userAgent: string;
-  constructor(request: RequestAPI, userAgent: string) {
-    this.request = request;
+  constructor(userAgent: string) {
     this.userAgent = userAgent;
   }
 
   async getSchedule(): Promise<JsonResponseBody> {
-    const body = await this.get(`${APIEndpoint}/schedule`);
-    return JSON.parse(body);
+    const response = await this.get(`${APIEndpoint}/schedule`);
+    return response.json();
   }
 
   async getShake(): Promise<ShakeResponseBody> {
-    const body = await this.get(`${APIEndpoint}/coop/schedule`);
-    return JSON.parse(body);
+    const response = await this.get(`${APIEndpoint}/coop/schedule`);
+    return response.json();
   }
 
-  private get(url: string): Promise<string> {
-    return new Promise((resolve, reject) => {
-      this.request(
-        {
-          url: url,
-          method: "GET",
-          headers: {
+  private async get(url: string): Promise<Response> {
+    const response = await fetch(
+      url,
+      Object.assign({
+        method: "GET",
+        headers: {
             "User-Agent": this.userAgent,
-          },
         },
-        (error, response, body) => {
-          if (!error && response.statusCode === 200) {
-            resolve(body);
-          } else {
-            reject(response);
-          }
-        }
-      );
-    });
+      })
+    )
+    return response
   }
 }
