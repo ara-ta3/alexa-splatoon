@@ -1,4 +1,4 @@
-import * as moment from "moment";
+import * as dayjs from 'dayjs'
 import { Schedule, ShakeSchedule } from "./services/Spla2API";
 import { stageRange } from "./Util";
 
@@ -36,7 +36,7 @@ export function shakeText(shake: ShakeSchedule): AlexaResponse {
 }
 
 export function gachiAndLeagueText(
-  currentTime: moment.Moment,
+  currentTime: dayjs.Dayjs,
   gachi: Schedule,
   league: Schedule
 ): AlexaResponse {
@@ -44,7 +44,7 @@ export function gachiAndLeagueText(
   const leagueMap = league.maps.join("と");
   const [begin, end] = stageRange(currentTime);
   const start =
-    moment() < currentTime ? `${begin}時から${end}時まで` : `${end}時まで`;
+    dayjs() < currentTime ? `${begin}時から${end}時まで` : `${end}時まで`;
   const text = `${start}のガチマは${gachi.rule}で、ステージは${gachiMap}だよ。リグマは${league.rule}で、ステージは${leagueMap}だよ。`;
   const images = gachi.maps_ex
     .map((m) => m.image)

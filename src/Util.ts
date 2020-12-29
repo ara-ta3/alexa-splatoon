@@ -1,20 +1,20 @@
 import { Schedule } from "./services/Spla2API";
-import * as moment from "moment";
+import * as dayjs from 'dayjs'
 
 export function isTargetRule(
   schedule: Schedule,
-  current: moment.Moment
+  current: dayjs.Dayjs
 ): boolean {
-  const start = moment(schedule.start);
-  const end = moment(schedule.end);
-  return current.isBetween(start, end);
+  const start = dayjs(schedule.start);
+  const end = dayjs(schedule.end);
+  return current.isAfter(end) && current.isBefore(end)
 }
 
-export function next(current: moment.Moment): moment.Moment {
+export function next(current: dayjs.Dayjs): dayjs.Dayjs {
   return current.clone().add(2, "h");
 }
 
-export function stageRange(current: moment.Moment): [number, number] {
+export function stageRange(current: dayjs.Dayjs): [number, number] {
   const h = current.hour();
   return h % 2 === 0 ? [h - 1, h + 1] : [h, h + 2];
 }
