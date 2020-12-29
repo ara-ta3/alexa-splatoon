@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "compile": "tsc",
-    "test": "ava -v test/*"
+    "test": "ava -v src/test/**/*.ts"
   },
   "repository": {
     "type": "git",
