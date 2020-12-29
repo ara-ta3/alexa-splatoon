@@ -13,6 +13,7 @@ jobs:
           steps:
             - run: npm install
             - run: npm run compile
+            - run: npm run test
             - run: npm install --production
             - persist_to_workspace:
                 root: ~/project
@@ -31,20 +32,20 @@ jobs:
       - run:
           name: Setup AWS CLI
           command: |
-              mkdir -p $HOME/.aws
-              echo [default] | tee -a $HOME/.aws/config
-              echo region=ap-northeast-1|tee -a $HOME/.aws/config
+            mkdir -p $HOME/.aws
+            echo [default] | tee -a $HOME/.aws/config
+            echo region=ap-northeast-1|tee -a $HOME/.aws/config
       - attach_workspace:
           at: ~/repo
       - run: make deploy
 
 workflows:
-    build-and-test:
-      jobs:
-        - build-and-test
-        - deploy:
-            requires:
-              - build-and-test
-            filters:
-                branches:
-                    only: master
+  build-and-test:
+    jobs:
+      - build-and-test
+      - deploy:
+          requires:
+            - build-and-test
+          filters:
+            branches:
+              only: master

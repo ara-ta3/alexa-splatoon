@@ -1,4 +1,4 @@
-import fetch, { Response } from 'node-fetch'
+import fetch, { Response } from "node-fetch";
 
 const APIEndpoint = "https://spla2.yuu26.com";
 
@@ -16,7 +16,7 @@ export interface Schedule {
   rule: string;
   maps: Array<string>;
   maps_ex: {
-    image: string
+    image: string;
   }[];
 }
 
@@ -62,10 +62,10 @@ export class Spla2APIClientImpl implements Spla2APIClient {
       Object.assign({
         method: "GET",
         headers: {
-            "User-Agent": this.userAgent,
+          "User-Agent": this.userAgent,
         },
       })
-    )
-    return response
+    );
+    return response;
   }
 }
