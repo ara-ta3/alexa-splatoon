@@ -38,6 +38,7 @@ export interface ShakeSchedule {
 
 export interface Spla2APIClient {
   getSchedule(): Promise<JsonResponseBody>;
+  getShake(): Promise<ShakeResponseBody>;
 }
 
 export class Spla2APIClientImpl implements Spla2APIClient {
