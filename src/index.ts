@@ -1,18 +1,9 @@
 import { SkillBuilders } from "ask-sdk-core";
-import * as dayjs from 'dayjs'
-import {
-  JsonResponseBody,
-  ShakeResponseBody,
-  Spla2APIClientImpl,
-} from "./services/Spla2API";
-import { isTargetRule, next } from "./Util";
-import { gachiAndLeagueText } from "./View";
-import { HandlerInput, RequestHandler } from "ask-sdk-core";
+import { Spla2APIClientImpl } from "./services/Spla2API";
 import { CustomSkill } from "ask-sdk-core/dist/skill/CustomSkill";
 import { RequestEnvelope } from "ask-sdk-model";
 
 import { AlexaSplatoon } from "./services/AlexaSplatoon";
-import { Spla2APIClientImpl } from "./services/Spla2API";
 import { handlers } from "./handlers";
 
 let skill: CustomSkill = null;
