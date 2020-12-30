@@ -1,5 +1,5 @@
 import test from "ava";
-import * as moment from "moment";
+import * as dayjs from "dayjs";
 import { AlexaSplatoon } from "../AlexaSplatoon";
 import { MockSpla2APIClient } from "./MockSpla2APIClient";
 
@@ -9,7 +9,7 @@ test.before(async (t) => {
 });
 
 test("stage() returns target rule", (t) => {
-  const current = moment("2020-12-31T08:00:00");
+  const current = dayjs("2020-12-31T08:00:00");
   const stage = service.stage(current, false);
   t.not(stage.gachi, undefined);
   t.not(stage.league, undefined);
@@ -18,7 +18,7 @@ test("stage() returns target rule", (t) => {
 });
 
 test("stage() returns next target rule", (t) => {
-  const current = moment("2020-12-31T08:00:00");
+  const current = dayjs("2020-12-31T08:00:00");
   const stage = service.stage(current, true);
   t.not(stage.gachi, undefined);
   t.not(stage.league, undefined);
@@ -27,7 +27,7 @@ test("stage() returns next target rule", (t) => {
 });
 
 test("stage() returns undefined when target rule is empty", (t) => {
-  const current = moment("2020-12-31T00:00:00");
+  const current = dayjs("2020-12-31T00:00:00");
   const stage = service.stage(current, false);
   t.is(stage.gachi, undefined);
   t.is(stage.league, undefined);

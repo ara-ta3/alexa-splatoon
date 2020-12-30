@@ -1,4 +1,4 @@
-import moment = require("moment");
+import * as dayjs from "dayjs";
 import { isTargetRule, next } from "../Util";
 import {
   JsonResponseBody,
@@ -29,7 +29,7 @@ export class AlexaSplatoon {
   }
 
   stage(
-    current: moment.Moment,
+    current: dayjs.Dayjs,
     nextOrNot: boolean
   ): { gachi?: Schedule; league?: Schedule } {
     const fixedCurrent = nextOrNot ? next(current) : current;
@@ -50,8 +50,8 @@ export class AlexaSplatoon {
       return null;
     }
     return this.shakeCache.result.reduce((prev, current) => {
-      const prevStart = moment(prev.start);
-      const currentStart = moment(current.start);
+      const prevStart = dayjs(prev.start);
+      const currentStart = dayjs(current.start);
       return prevStart.isBefore(currentStart) ? prev : current;
     });
   }

@@ -1,5 +1,5 @@
 import { RequestHandler } from "ask-sdk-core";
-import * as moment from "moment";
+import * as dayjs from "dayjs";
 import { AlexaSplatoon } from "../services/AlexaSplatoon";
 import { next } from "../Util";
 import { gachiAndLeagueText } from "../SpeakText";
@@ -13,7 +13,7 @@ export function NextIntent(splatoon: AlexaSplatoon): RequestHandler {
       );
     },
     handle: async function ({ responseBuilder }) {
-      const current = moment();
+      const current = dayjs();
       const { gachi, league } = splatoon.stage(current, true);
       if (gachi === undefined || league === undefined) {
         return responseBuilder

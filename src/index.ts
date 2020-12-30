@@ -1,9 +1,9 @@
 import { SkillBuilders } from "ask-sdk-core";
+import { Spla2APIClientImpl } from "./services/Spla2API";
 import { CustomSkill } from "ask-sdk-core/dist/skill/CustomSkill";
 import { RequestEnvelope } from "ask-sdk-model";
 
 import { AlexaSplatoon } from "./services/AlexaSplatoon";
-import { Spla2APIClientImpl } from "./services/Spla2API";
 import { handlers } from "./handlers";
 
 let skill: CustomSkill = null;
