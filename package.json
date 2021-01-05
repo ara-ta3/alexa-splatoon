@@ -25,7 +25,7 @@
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
-    "@types/node": "^14.14.19",
+    "@types/node": "^14.14.20",
     "@types/node-fetch": "^2.5.7",
     "ava": "^3.15.0",
     "prettier": "^2.2.1",
