@@ -8,11 +8,15 @@ export const HelpIntentHandler: RequestHandler = {
     );
   },
   handle(handlerInput: HandlerInput) {
-    const speechText =
-      "ステージを聞きたい時は「今のステージを教えて」か「次のステージを教えて」と、シャケを聞きたいときは「シャケを教えて」と、終わりたい時は「おしまい」と言ってください。どうしますか？";
-    return handlerInput.responseBuilder
-      .speak(speechText)
-      .reprompt(speechText)
-      .getResponse();
+    return helpHandler(handlerInput);
   },
+};
+
+export const helpHandler = (handlerInput: HandlerInput) => {
+  const speechText =
+    "ステージを聞きたい時は「今のステージを教えて」か「次のステージを教えて」と、シャケを聞きたいときは「シャケを教えて」と、終わりたい時は「おしまい」と言ってください。どうしますか？";
+  return handlerInput.responseBuilder
+    .speak(speechText)
+    .reprompt(speechText)
+    .getResponse();
 };

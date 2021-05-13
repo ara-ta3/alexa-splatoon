@@ -7,11 +7,14 @@ import { AlexaSplatoon } from "./services/AlexaSplatoon";
 import { handlers } from "./handlers";
 
 let skill: CustomSkill = null;
+let splatoon: AlexaSplatoon | null = null;
 
 const handler = async (event: RequestEnvelope, context: any, _: Function) => {
-  const splatoon = new AlexaSplatoon(
-    new Spla2APIClientImpl(process.env.USER_AGENT)
-  );
+  if (splatoon === null) {
+    splatoon = new AlexaSplatoon(
+      new Spla2APIClientImpl(process.env.USER_AGENT)
+    );
+  }
 
   if (splatoon.empty()) {
     await splatoon.update();
