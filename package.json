@@ -21,7 +21,7 @@
     "ask-sdk-core": "^2.10.2",
     "ask-sdk-model": "^1.35.1",
     "ask-sdk-runtime": "^2.10.2",
-    "dayjs": "^1.10.5",
+    "dayjs": "^1.10.6",
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
