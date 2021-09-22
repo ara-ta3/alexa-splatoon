@@ -11,7 +11,7 @@ all: install compile zip deploy
 install:
 	$(NPM) install
 
-test: compile
+test:
 	$(NPM) run test
 
 compile:
