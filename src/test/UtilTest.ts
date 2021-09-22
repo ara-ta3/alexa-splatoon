@@ -48,3 +48,17 @@ test("stageRange returns 23 hour on 0 o'clock", (t) => {
   t.is(start, 23);
   t.is(end, 1);
 });
+
+test("stageRange returns 3 hour on 4 o'clock", (t) => {
+  const d = dayjs("2021-09-22T04:00:00");
+  const [start, end] = stageRange(d);
+  t.is(start, 3);
+  t.is(end, 5);
+});
+
+test("stageRange returns 3 hour on 3 o'clock", (t) => {
+  const d = dayjs("2021-09-22T03:00:00");
+  const [start, end] = stageRange(d);
+  t.is(start, 3);
+  t.is(end, 5);
+});
