@@ -12,7 +12,7 @@ all: install compile zip deploy
 install:
 	$(NPM) install
 
-test: clean
+test: 
 	$(NPM) run test
 
 compile:
