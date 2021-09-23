@@ -51,10 +51,10 @@ export function shakeText(
 }
 
 const gachiAndLeagueTextTemplate: string = `{{#alreadyStarted}}
-{{begin}}時から{{end}}時まで
+{{end}}時まで
 {{/alreadyStarted}}
 {{^alreadyStarted}}
-{{end}}時まで
+{{begin}}時から{{end}}時まで
 {{/alreadyStarted}}
 のガチマは{{gachiRule}}で、ステージは{{gachiMap1}}と{{gachiMap2}}だよ。
 リグマは{{leagueRule}}で、ステージは{{leagueMap1}}と{{leagueMap2}}だよ。
@@ -71,7 +71,7 @@ export function gachiAndLeagueText(
     .map((m) => m.image)
     .concat(league.maps_ex.map((m) => m.image));
   const params = {
-    alreadyStarted: now < currentTime,
+    alreadyStarted: now >= currentTime,
     begin: begin,
     end: end,
     gachiRule: gachi.rule,
