@@ -50,16 +50,27 @@ export function shakeText(
   };
 }
 
+const gachiAndLeagueTextTemplate: string = `{{#alreadyStarted}}
+{{end}}時まで
+{{/alreadyStarted}}
+{{^alreadyStarted}}
+{{begin}}時から{{end}}時まで
+{{/alreadyStarted}}
+のガチマは{{gachiRule}}で、ステージは{{gachiMap1}}と{{gachiMap2}}だよ。
+リグマは{{leagueRule}}で、ステージは{{leagueMap1}}と{{leagueMap2}}だよ。
+`;
+
 export function gachiAndLeagueText(
   currentTime: dayjs.Dayjs,
   gachi: Schedule,
-  league: Schedule
+  league: Schedule,
+  now: dayjs.Dayjs = dayjs()
 ): AlexaResponse {
   const gachiMap = gachi.maps.join("と");
   const leagueMap = league.maps.join("と");
   const [begin, end] = stageRange(currentTime);
   const start =
-    dayjs() < currentTime ? `${begin}時から${end}時まで` : `${end}時まで`;
+    now < currentTime ? `${begin}時から${end}時まで` : `${end}時まで`;
   const text = `${start}のガチマは${gachi.rule}で、ステージは${gachiMap}だよ。リグマは${league.rule}で、ステージは${leagueMap}だよ。`;
   const images = gachi.maps_ex
     .map((m) => m.image)
