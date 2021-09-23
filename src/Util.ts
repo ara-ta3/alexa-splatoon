@@ -18,3 +18,13 @@ export function stageRange(current: dayjs.Dayjs): [number, number] {
   const h = current.hour();
   return h % 2 === 0 ? [(24 + h - 1) % 24, h + 1] : [h, h + 2];
 }
+
+export function targetScheduleDates(
+  current: dayjs.Dayjs,
+  n: number
+): dayjs.Dayjs[] {
+  return [...Array(n - 1)].reduce(
+    (prev, _, i) => prev.concat(next(prev[i])),
+    [current]
+  );
+}

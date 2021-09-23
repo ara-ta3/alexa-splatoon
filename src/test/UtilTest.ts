@@ -2,7 +2,7 @@ import test from "ava";
 import * as dayjs from "dayjs";
 import { Schedule } from "../services/Spla2API";
 
-import { isTargetRule, stageRange } from "../Util";
+import { isTargetRule, stageRange, targetScheduleDates } from "../Util";
 
 test("isTargetRule returns true when current time is between start and end", (t) => {
   const s: Schedule = {
@@ -61,4 +61,16 @@ test("stageRange returns 3 hour on 3 o'clock", (t) => {
   const [start, end] = stageRange(d);
   t.is(start, 3);
   t.is(end, 5);
+});
+
+test("target shcedule dates return 5 dates", (t) => {
+  const d = dayjs("2021-09-22T01:30:00");
+  const a = targetScheduleDates(d, 5);
+  t.deepEqual(a, [
+    dayjs("2021-09-22T01:30:00"),
+    dayjs("2021-09-22T03:30:00"),
+    dayjs("2021-09-22T05:30:00"),
+    dayjs("2021-09-22T07:30:00"),
+    dayjs("2021-09-22T09:30:00"),
+  ]);
 });
