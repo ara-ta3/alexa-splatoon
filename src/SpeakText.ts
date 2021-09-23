@@ -9,10 +9,12 @@ export interface AlexaResponse {
   cardImage?: string;
 }
 
-export function shakeText(shake: ShakeSchedule): AlexaResponse {
+export function shakeText(
+  shake: ShakeSchedule,
+  current: dayjs.Dayjs = dayjs()
+): AlexaResponse {
   const start = dayjs(shake.start);
   const end = dayjs(shake.end);
-  const current = dayjs();
   const heldNow = current.isAfter(start) && current.isBefore(end);
   const heldText = heldNow
     ? `シャケは今開催中`
