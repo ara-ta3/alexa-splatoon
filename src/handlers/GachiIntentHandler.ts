@@ -13,7 +13,7 @@ export function GachiIntent(splatoon: AlexaSplatoon): RequestHandler {
       );
     },
     handle: async function ({ responseBuilder }) {
-      const targets = targetScheduleDates(dayjs(), 5);
+      const targets = targetScheduleDates(dayjs(), 4);
       const schedules = splatoon.gachi(targets);
       if (schedules.length === 0) {
         return responseBuilder.speak("あれれ、ガチマがないよ").getResponse();
