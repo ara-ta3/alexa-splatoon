@@ -105,7 +105,7 @@ const schedulesSpeakTemplate: string = `
 `.replace(/(\r\n|\n|\r)/gm, "");
 
 export function gachiText(schedules: Schedule[]): AlexaResponse {
-  const params = schedules.map((s) => {
+  const scheduleParams = schedules.map((s) => {
     return {
       rule: s.rule,
       begin: dayjs(s.start).format("H"),
@@ -117,9 +117,11 @@ export function gachiText(schedules: Schedule[]): AlexaResponse {
   return {
     speakText: mustache.render(schedulesSpeakTemplate, {
       category: "ガチマ",
-      ...params,
+      schedules: scheduleParams,
     }),
     cardTitle: `直近のガチマ`,
-    cardText: mustache.render(schedulesTemplate, params),
+    cardText: mustache.render(schedulesTemplate, {
+      schedules: scheduleParams,
+    }),
   };
 }
