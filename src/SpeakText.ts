@@ -93,3 +93,33 @@ export function gachiAndLeagueText(
     cardImage: images[Math.floor(Math.random() * images.length)],
   };
 }
+
+const schedulesTemplate: string = `{{#schedules}}{{begin}}~{{end}} {{rule}}({{map1}} {{map2}}){{/schedules}}`;
+
+const schedulesSpeakTemplate: string = `
+直近の{{category}}は
+{{#schedules}}
+{{begin}}時から{{end}}までが{{map1}}と{{map2}}の{{rule}}、
+{{/schedules}}
+だよ。
+`.replace(/(\r\n|\n|\r)/gm, "");
+
+export function gachiText(schedules: Schedule[]): AlexaResponse {
+  const params = schedules.map((s) => {
+    return {
+      rule: s.rule,
+      begin: dayjs(s.start).format("H"),
+      end: dayjs(s.end).format("H"),
+      map1: s.maps[0],
+      map2: s.maps[1],
+    };
+  });
+  return {
+    speakText: mustache.render(schedulesSpeakTemplate, {
+      category: "ガチマ",
+      ...params,
+    }),
+    cardTitle: `直近のガチマ`,
+    cardText: mustache.render(schedulesTemplate, params),
+  };
+}

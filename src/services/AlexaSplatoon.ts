@@ -55,4 +55,10 @@ export class AlexaSplatoon {
       return prevStart.isBefore(currentStart) ? prev : current;
     });
   }
+
+  gachi(targets: dayjs.Dayjs[]): Schedule[] {
+    return targets
+      .map((d) => this.cache.result.gachi.find((s) => isTargetRule(s, d)))
+      .filter((x) => x !== undefined);
+  }
 }

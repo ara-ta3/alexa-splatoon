@@ -1,5 +1,6 @@
 import { RequestHandler } from "ask-sdk-core";
 import { AlexaSplatoon } from "../services/AlexaSplatoon";
+import { GachiIntent } from "./GachiIntentHandler";
 import { HelpIntentHandler } from "./HelpIntentHandler";
 import { LaunchHandler } from "./LaunchHandler";
 import { NextIntent } from "./NextIntentHandler";
@@ -13,6 +14,7 @@ export const handlers: (splatoon: AlexaSplatoon) => RequestHandler[] = (
   StageIntentHandler(splatoon),
   NextIntent(splatoon),
   ShakeIntent(splatoon),
+  GachiIntent(splatoon),
   HelpIntentHandler,
   SessionEndHandler,
   LaunchHandler,
