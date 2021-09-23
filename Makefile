@@ -11,7 +11,7 @@ all: install compile zip deploy
 install:
 	$(NPM) install
 
-test:
+test: clean
 	$(NPM) run test
 
 compile:
@@ -23,3 +23,5 @@ zip:
 deploy: zip
 	$(AWS) lambda update-function-code --function-name alexa-splatoon --zip-file fileb://./$(DIST)
 
+clean:
+	rm -f src/**/*.js
