@@ -18,9 +18,8 @@ jobs:
             - persist_to_workspace:
                 root: ~/project
                 paths:
-                  - index.js
                   - node_modules
-                  - src
+                  - __dist
   deploy:
     docker:
       - image: circleci/python:3.7
