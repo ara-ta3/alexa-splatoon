@@ -14,11 +14,11 @@ const shakeTextTemplate: string = `{{#heldNow}}
 シャケは今開催中で
 {{/heldNow}}
 {{^heldNow}}
-シャケは{{startDay}}の{{startHour}}からで
+シャケは{{startDay}}の{{startHour}}時からで
 {{/heldNow}}
-でステージは{{stageName}}だよ
-武器は{{#weapons}}{{name}}、{{/weapons}}だよ
-`.replace("\n", "");
+ステージは{{stageName}}だよ。
+武器は{{#weapons}}、{{name}}{{/weapons}}だよ
+`.replace(/(\r\n|\n|\r)/gm, "");
 
 export function shakeText(
   shake: ShakeSchedule,
@@ -29,7 +29,7 @@ export function shakeText(
   const speakParams = {
     heldNow: current.isAfter(start) && current.isBefore(end),
     startDay: start.format("M月D日"),
-    startHour: start.format("H時から"),
+    startHour: start.format("H"),
     stageName: shake.stage.name,
     weapons: shake.weapons.map((w) => {
       return {
