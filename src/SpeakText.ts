@@ -1,6 +1,7 @@
 import * as dayjs from "dayjs";
 import { Schedule, ShakeSchedule } from "./services/Spla2API";
 import { stageRange } from "./Util";
+import * as mustache from "mustache";
 
 export interface AlexaResponse {
   speakText: string;
@@ -9,24 +10,35 @@ export interface AlexaResponse {
   cardImage?: string;
 }
 
+const shakeTextTemplate: string = `{{#heldNow}}
+シャケは今開催中で
+{{/heldNow}}
+{{^heldNow}}
+シャケは{{startDay}}の{{startHour}}からで
+{{/heldNow}}
+でステージは{{stageName}}だよ
+武器は{{#weapons}}{{name}}、{{/weapons}}だよ
+`.replace("\n", "");
+
 export function shakeText(
   shake: ShakeSchedule,
   current: dayjs.Dayjs = dayjs()
 ): AlexaResponse {
   const start = dayjs(shake.start);
   const end = dayjs(shake.end);
-  const heldNow = current.isAfter(start) && current.isBefore(end);
-  const heldText = heldNow
-    ? `シャケは今開催中`
-    : `シャケは${start.format("M月D日のH時から")}`;
+  const speakParams = {
+    heldNow: current.isAfter(start) && current.isBefore(end),
+    startDay: start.format("M月D日"),
+    startHour: start.format("H時から"),
+    stageName: shake.stage.name,
+    weapons: shake.weapons.map((w) => {
+      return {
+        name: w.name === "？" ? "はてな" : w.name,
+      };
+    }),
+  };
 
-  const weaponText = shake.weapons
-    .map((w) => {
-      return w.name === "？" ? "はてな" : w.name;
-    })
-    .join("、");
-  const speakText =
-    heldText + `でステージは${shake.stage.name}だよ。武器は${weaponText}だよ`;
+  const speakText = mustache.render(shakeTextTemplate, speakParams);
 
   return {
     speakText,
