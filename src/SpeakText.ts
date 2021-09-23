@@ -95,7 +95,8 @@ export function gachiAndLeagueText(
 }
 
 const schedulesTemplate: string = `{{#schedules}}
-{{begin}}~{{end}} {{rule}}({{map1}} {{map2}})
+{{begin}}時~{{end}}時 {{rule}}
+  {{map1}} {{map2}}
 {{/schedules}}`;
 
 const schedulesSpeakTemplate: string = `
