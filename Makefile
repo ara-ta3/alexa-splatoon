@@ -22,5 +22,5 @@ zip:
 	zip -r $(LAMBDA_DIST) node_modules $(SOURCE_DIST)
 
 deploy: zip
-	$(AWS) lambda update-function-code --function-name alexa-splatoon --zip-file fileb://./$(DIST)
+	$(AWS) lambda update-function-code --function-name alexa-splatoon --zip-file fileb://./$(LAMBDA_DIST)
 
