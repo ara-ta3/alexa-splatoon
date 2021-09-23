@@ -9,7 +9,7 @@ export function GachiIntent(splatoon: AlexaSplatoon): RequestHandler {
     canHandle: async function ({ requestEnvelope }) {
       return (
         requestEnvelope.request.type === "IntentRequest" &&
-        requestEnvelope.request.intent.name === "NextIntent"
+        requestEnvelope.request.intent.name === "GachiIntent"
       );
     },
     handle: async function ({ responseBuilder }) {
