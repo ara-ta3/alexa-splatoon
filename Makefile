@@ -2,7 +2,8 @@ NPM=npm
 AWS=aws
 TSC=./node_modules/.bin/tsc
 
-DIST=lambda.zip
+LAMBDA_DIST=lambda.zip
+SOURCE_DIST=__dist
 
 .PHONY: test
 
@@ -18,10 +19,8 @@ compile:
 	$(NPM) run compile
 
 zip:
-	zip -r $(DIST) node_modules src
+	zip -r $(LAMBDA_DIST) node_modules $(SOURCE_DIST)
 
 deploy: zip
 	$(AWS) lambda update-function-code --function-name alexa-splatoon --zip-file fileb://./$(DIST)
 
-clean:
-	rm -f src/**/*.js
