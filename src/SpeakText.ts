@@ -94,12 +94,14 @@ export function gachiAndLeagueText(
   };
 }
 
-const schedulesTemplate: string = `{{#schedules}}{{begin}}~{{end}} {{rule}}({{map1}} {{map2}}){{/schedules}}`;
+const schedulesTemplate: string = `{{#schedules}}
+{{begin}}~{{end}} {{rule}}({{map1}} {{map2}})
+{{/schedules}}`;
 
 const schedulesSpeakTemplate: string = `
 直近の{{category}}は
 {{#schedules}}
-{{begin}}時から{{end}}までが{{map1}}と{{map2}}の{{rule}}、
+{{begin}}時から{{end}}時までが{{map1}}と{{map2}}の{{rule}}、
 {{/schedules}}
 だよ。
 `.replace(/(\r\n|\n|\r)/gm, "");
