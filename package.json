@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@types/mustache": "^4.1.2",
-    "@types/node": "^16.10.4",
+    "@types/node": "^16.10.9",
     "@types/node-fetch": "^2.5.12",
     "ansi-regex": ">=6.0.1",
     "ava": "^3.15.0",
