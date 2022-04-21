@@ -11,4 +11,7 @@ updates:
     - "ara-ta3"
   labels:
     - "automerge"
+  ignore:
+    - dependency-name: "node-fetch"
+      versions: ["3.x"]
 
