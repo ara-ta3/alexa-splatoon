@@ -18,22 +18,22 @@
   },
   "homepage": "https://github.com/ara-ta3/alexa-splatoon#readme",
   "dependencies": {
-    "ask-sdk-core": "^2.11.0",
-    "ask-sdk-model": "^1.36.1",
-    "ask-sdk-runtime": "^2.10.2",
-    "dayjs": "^1.10.7",
+    "ask-sdk-core": "^2.12.1",
+    "ask-sdk-model": "^1.38.1",
+    "ask-sdk-runtime": "^2.12.0",
+    "dayjs": "^1.11.1",
     "mustache": "^4.2.0",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.7"
   },
   "devDependencies": {
     "@types/mustache": "^4.1.2",
-    "@types/node": "^16.9.6",
-    "@types/node-fetch": "^2.5.12",
+    "@types/node": "^17.0.25",
+    "@types/node-fetch": "^2.6.1",
     "ansi-regex": ">=6.0.1",
-    "ava": "^3.15.0",
-    "prettier": "^2.4.1",
-    "ts-node": "^10.2.1",
-    "typescript": "^4.4.3"
+    "ava": "^4.2.0",
+    "prettier": "^2.6.2",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.3"
   },
   "ava": {
     "extensions": [
