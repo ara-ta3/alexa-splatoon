@@ -1,27 +1,19 @@
 import test from "ava";
 import dayjs = require("dayjs");
+import { DateTime } from "../Contract";
 import { gachiAndLeagueText, shakeText } from "../SpeakText";
 import { next } from "../Util";
 
 test("shake text", (t) => {
   const a = shakeText(
     {
-      start: "2021-09-29T17:00:00",
-      end: "2021-09-29T19:00:00",
-      stage: {
-        image: "",
-        name: "シャケト場",
-      },
-      weapons: [
-        {
-          name: "？",
-        },
-        {
-          name: "スプラシューター",
-        },
-      ],
+      start: new DateTime("2021-09-29T17:00:00"),
+      end: new DateTime("2021-09-29T19:00:00"),
+      stageImage: "",
+      stageName: "シャケト場",
+      weapons: ["？", "スプラシューター"],
     },
-    dayjs("2021-09-20T17:00:00")
+    new DateTime("2021-09-20T17:00:00")
   );
   t.is(
     a.speakText,

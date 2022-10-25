@@ -18,22 +18,20 @@ const shakeTextTemplate: string = `{{#heldNow}}
 シャケは{{startDay}}の{{startHour}}時からで
 {{/heldNow}}
 ステージは{{stageName}}だよ。
-武器は{{#weapons}}、{{name}}{{/weapons}}だよ
+武器は、{{weapons}}だよ
 `.replace(/(\r\n|\n|\r)/gm, "");
 
 export function shakeText(
   shake: Shake,
   current: DateTime = DateTimeNow()
 ): AlexaResponse {
-  const speakParams = {
+  const speakText = mustache.render(shakeTextTemplate, {
     heldNow: current.between(shake.start, shake.end),
     startDay: shake.start.format("M月D日"),
     startHour: shake.start.format("H"),
     stageName: shake.stageName,
-    weapons: shake.weapons.map((w) => (w === "？" ? "はてな" : w)),
-  };
-
-  const speakText = mustache.render(shakeTextTemplate, speakParams);
+    weapons: shake.weapons.map((w) => (w === "？" ? "はてな" : w)).join("、"),
+  });
 
   return {
     speakText,
