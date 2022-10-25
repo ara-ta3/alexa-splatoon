@@ -1,10 +1,6 @@
 import fetch, { Response } from "node-fetch";
-import {
-  DateTime,
-  Period,
-  Shake,
-  Schedule as DomainSchedule,
-} from "../Contract";
+import { Shake, Schedule as DomainSchedule } from "../Contract";
+import { Period } from "../utils/Period";
 
 const APIEndpoint = "https://spla2.yuu26.com";
 

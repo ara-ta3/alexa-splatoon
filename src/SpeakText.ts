@@ -1,8 +1,9 @@
 import * as dayjs from "dayjs";
 import * as mustache from "mustache";
-import { DateTime, DateTimeNow, Shake } from "./Contract";
+import { Shake } from "./Contract";
 import { Schedule } from "./services/Spla2API";
 import { stageRange } from "./Util";
+import { DateTime, DateTimeNow } from "./utils/DateTime";
 
 export interface AlexaResponse {
   speakText: string;

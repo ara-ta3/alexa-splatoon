@@ -1,8 +1,9 @@
 import test from "ava";
-import dayjs = require("dayjs");
-import { DateTime, Period } from "../Contract";
+import * as dayjs from "dayjs";
 import { gachiAndLeagueText, shakeText } from "../SpeakText";
 import { next } from "../Util";
+import { DateTime } from "../utils/DateTime";
+import { Period } from "../utils/Period";
 
 test("shake text", (t) => {
   const a = shakeText(
