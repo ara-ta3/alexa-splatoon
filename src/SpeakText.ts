@@ -1,6 +1,6 @@
 import * as dayjs from "dayjs";
 import * as mustache from "mustache";
-import { Shake } from "./Contract";
+import { Shake, Schedule as DomainSchedule } from "./Contract";
 import { Schedule } from "./services/Spla2API";
 import { stageRange } from "./Util";
 import { DateTime, DateTimeNow } from "./utils/DateTime";
@@ -101,14 +101,14 @@ const schedulesSpeakTemplate: string = `
 だよ。
 `.replace(/(\r\n|\n|\r)/gm, "");
 
-export function gachiText(schedules: Schedule[]): AlexaResponse {
+export function gachiText(schedules: DomainSchedule[]): AlexaResponse {
   const scheduleParams = schedules.map((s) => {
     return {
       rule: s.rule,
-      begin: dayjs(s.start).format("H"),
-      end: dayjs(s.end).format("H"),
-      map1: s.maps[0],
-      map2: s.maps[1],
+      begin: s.period.start.format("H"),
+      end: s.period.end.format("H"),
+      map1: s.maps[0].name,
+      map2: s.maps[1].name,
     };
   });
   return {
