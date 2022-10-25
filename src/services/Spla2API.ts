@@ -1,5 +1,10 @@
 import fetch, { Response } from "node-fetch";
-import { DateTime, Period, Shake } from "../Contract";
+import {
+  DateTime,
+  Period,
+  Shake,
+  Schedule as DomainSchedule,
+} from "../Contract";
 
 const APIEndpoint = "https://spla2.yuu26.com";
 
@@ -19,6 +24,23 @@ export interface Schedule {
   maps_ex: {
     image: string;
   }[];
+}
+
+export function toDomainSchedule(s: Schedule): DomainSchedule {
+  return {
+    period: new Period(s.start, s.end),
+    rule: s.rule,
+    maps: [
+      {
+        name: s.maps[0],
+        image: s.maps_ex[0].image,
+      },
+      {
+        name: s.maps[1],
+        image: s.maps_ex[1].image,
+      },
+    ],
+  };
 }
 
 export interface ShakeResponseBody {
