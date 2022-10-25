@@ -1,4 +1,5 @@
 import fetch, { Response } from "node-fetch";
+import { DateTime, Shake } from "../Contract";
 
 const APIEndpoint = "https://spla2.yuu26.com";
 
@@ -34,6 +35,16 @@ export interface ShakeSchedule {
   weapons: {
     name: string;
   }[];
+}
+
+export function toDomainShake(shake: ShakeSchedule): Shake {
+  return {
+    start: new DateTime(shake.start),
+    end: new DateTime(shake.end),
+    stageImage: shake.stage.image,
+    stageName: shake.stage.name,
+    weapons: shake.weapons.map((w) => w.name),
+  };
 }
 
 export interface Spla2APIClient {
