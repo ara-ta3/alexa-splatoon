@@ -1,5 +1,5 @@
-import { Schedule } from "./services/Spla2API";
 import * as dayjs from "dayjs";
+import { Schedule } from "./services/Spla2API";
 
 export function isTargetRule(
   schedule: Schedule,

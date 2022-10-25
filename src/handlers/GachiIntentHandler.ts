@@ -1,8 +1,9 @@
 import * as dayjs from "dayjs";
 import { RequestHandler } from "ask-sdk-core";
 import { AlexaSplatoon } from "../services/AlexaSplatoon";
-import { next, targetScheduleDates } from "../Util";
+import { targetScheduleDates } from "../Util";
 import { gachiText } from "../SpeakText";
+import { toDomainSchedule } from "../services/Spla2API";
 
 export function GachiIntent(splatoon: AlexaSplatoon): RequestHandler {
   return {
@@ -18,8 +19,9 @@ export function GachiIntent(splatoon: AlexaSplatoon): RequestHandler {
       if (schedules.length === 0) {
         return responseBuilder.speak("あれれ、ガチマがないよ").getResponse();
       }
-      const { speakText, cardText, cardTitle, cardImage } =
-        gachiText(schedules);
+      const { speakText, cardText, cardTitle, cardImage } = gachiText(
+        schedules.map((x) => toDomainSchedule(x))
+      );
       return responseBuilder
         .speak(speakText)
         .withStandardCard(cardTitle, cardText, undefined, cardImage)
