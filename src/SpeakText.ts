@@ -55,17 +55,17 @@ const gachiAndLeagueTextTemplate: string = `{{#alreadyStarted}}
 `.replace(/(\r\n|\n|\r)/gm, "");
 
 export function gachiAndLeagueText(
-  currentTime: dayjs.Dayjs,
+  targetTime: dayjs.Dayjs,
   gachi: Schedule,
   league: Schedule,
   now: dayjs.Dayjs = dayjs()
 ): AlexaResponse {
-  const [begin, end] = stageRange(currentTime);
+  const [begin, end] = stageRange(targetTime);
   const images = gachi.maps_ex
     .map((m) => m.image)
     .concat(league.maps_ex.map((m) => m.image));
   const params = {
-    alreadyStarted: now >= currentTime,
+    alreadyStarted: now >= targetTime,
     begin: begin,
     end: end,
     gachiRule: gachi.rule,
