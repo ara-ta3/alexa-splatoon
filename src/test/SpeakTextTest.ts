@@ -1,16 +1,17 @@
 import test from "ava";
 import dayjs = require("dayjs");
-import { DateTime } from "../Contract";
+import { DateTime, Period } from "../Contract";
 import { gachiAndLeagueText, shakeText } from "../SpeakText";
 import { next } from "../Util";
 
 test("shake text", (t) => {
   const a = shakeText(
     {
-      start: new DateTime("2021-09-29T17:00:00"),
-      end: new DateTime("2021-09-29T19:00:00"),
-      stageImage: "",
-      stageName: "シャケト場",
+      period: new Period("2021-09-29T17:00:00", "2021-09-29T19:00:00"),
+      stage: {
+        name: "シャケト場",
+        image: "",
+      },
       weapons: ["？", "スプラシューター"],
     },
     new DateTime("2021-09-20T17:00:00")

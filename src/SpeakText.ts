@@ -26,20 +26,20 @@ export function shakeText(
   current: DateTime = DateTimeNow()
 ): AlexaResponse {
   const speakText = mustache.render(shakeTextTemplate, {
-    heldNow: current.between(shake.start, shake.end),
-    startDay: shake.start.format("M月D日"),
-    startHour: shake.start.format("H"),
-    stageName: shake.stageName,
+    heldNow: shake.period.in(current),
+    startDay: shake.period.start.format("M月D日"),
+    startHour: shake.period.start.format("H"),
+    stageName: shake.stage.name,
     weapons: shake.weapons.map((w) => (w === "？" ? "はてな" : w)).join("、"),
   });
 
   return {
     speakText,
-    cardTitle: `${shake.stageName} ${shake.start.format(
+    cardTitle: `${shake.stage.name} ${shake.period.start.format(
       "M/D H:00"
-    )} ~ ${shake.end.format("M/D H:00")}`,
+    )} ~ ${shake.period.end.format("M/D H:00")}`,
     cardText: shake.weapons.map((w) => `- ${w}`).join("\n"),
-    cardImage: shake.stageImage,
+    cardImage: shake.stage.image,
   };
 }
 
