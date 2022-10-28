@@ -1,9 +1,9 @@
 import { RequestHandler } from "ask-sdk-core";
-import { AlexaSplatoon } from "../services/AlexaSplatoon";
-import { gachiAndLeagueText } from "../SpeakText";
+import { AlexaSplatoon3 } from "../services/AlexaSplatoon3";
+import { bankaraMatchText } from "../templates/Splatoon3";
 import { DateTimeNow } from "../utils/DateTime";
 
-export function NextIntent(splatoon: AlexaSplatoon): RequestHandler {
+export function NextIntent(splatoon: AlexaSplatoon3): RequestHandler {
   return {
     canHandle: async function ({ requestEnvelope }) {
       return (
@@ -13,16 +13,15 @@ export function NextIntent(splatoon: AlexaSplatoon): RequestHandler {
     },
     handle: async function ({ responseBuilder }) {
       const current = DateTimeNow();
-      const { gachi, league } = splatoon.stage(current, true);
-      if (gachi === undefined || league === undefined) {
+      const m = await splatoon.stage(current, true);
+      if (m === null) {
         return responseBuilder
-          .speak("あれれ、今のガチマかリグマがないよ")
+          .speak("あれれ、今のバンカラマッチがないよ")
           .getResponse();
       }
-      const { speakText, cardText, cardTitle, cardImage } = gachiAndLeagueText(
-        DateTimeNow().next(),
-        gachi,
-        league
+      const { speakText, cardText, cardTitle, cardImage } = bankaraMatchText(
+        current.next(),
+        m
       );
       return responseBuilder
         .speak(speakText)

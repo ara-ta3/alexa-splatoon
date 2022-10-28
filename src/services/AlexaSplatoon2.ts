@@ -2,7 +2,7 @@ import { Match, Shake, Splatoon2Matchies } from "../Contract";
 import { DateTime } from "../utils/DateTime";
 import { Spla2APIClient } from "./Spla2API";
 
-export class AlexaSplatoon {
+export class AlexaSplatoon2 {
   private splatoon2Cache: Splatoon2Matchies;
   private shakeCache: Shake[];
   private client: Spla2APIClient;

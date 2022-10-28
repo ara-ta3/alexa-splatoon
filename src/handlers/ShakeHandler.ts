@@ -1,8 +1,8 @@
 import { RequestHandler } from "ask-sdk-core";
-import { AlexaSplatoon } from "../services/AlexaSplatoon";
-import { shakeText } from "../SpeakText";
+import { AlexaSplatoon3 } from "../services/AlexaSplatoon3";
+import { shakeText } from "../templates/Splatoon3";
 
-export function ShakeIntent(splatoon: AlexaSplatoon): RequestHandler {
+export function ShakeIntent(splatoon: AlexaSplatoon3): RequestHandler {
   return {
     canHandle: async function ({ requestEnvelope }) {
       return (
@@ -11,7 +11,7 @@ export function ShakeIntent(splatoon: AlexaSplatoon): RequestHandler {
       );
     },
     handle: async function ({ responseBuilder }) {
-      const shake = splatoon.shake();
+      const shake = await splatoon.shake();
       if (shake === null) {
         return responseBuilder
           .speak("あれ、シャケのルールが取得できてないよ")

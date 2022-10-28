@@ -1,10 +1,10 @@
 import { RequestHandler } from "ask-sdk-core";
-import { AlexaSplatoon } from "../services/AlexaSplatoon";
+import { AlexaSplatoon2 } from "../services/AlexaSplatoon2";
 import { targetScheduleDates } from "../Util";
 import { gachiText } from "../SpeakText";
 import { DateTime } from "../utils/DateTime";
 
-export function GachiIntent(splatoon: AlexaSplatoon): RequestHandler {
+export function GachiIntent(splatoon: AlexaSplatoon2): RequestHandler {
   return {
     canHandle: async function ({ requestEnvelope }) {
       return (
