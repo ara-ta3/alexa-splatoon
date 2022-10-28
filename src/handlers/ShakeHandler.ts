@@ -1,8 +1,8 @@
 import { RequestHandler } from "ask-sdk-core";
-import { AlexaSplatoon2 } from "../services/AlexaSplatoon";
-import { shakeText } from "../SpeakText";
+import { AlexaSplatoon3 } from "../services/AlexaSplatoon3";
+import { shakeText } from "../templates/Splatoon3";
 
-export function ShakeIntent(splatoon: AlexaSplatoon2): RequestHandler {
+export function ShakeIntent(splatoon: AlexaSplatoon3): RequestHandler {
   return {
     canHandle: async function ({ requestEnvelope }) {
       return (
