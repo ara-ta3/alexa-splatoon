@@ -12,6 +12,13 @@ export interface Splatoon2Matchies {
   league: Match[];
 }
 
+export interface Splatoon3Matchies {
+  bankara: {
+    challenge: Match[];
+    open: Match[];
+  };
+}
+
 export interface Match {
   period: Period;
   rule: string;
