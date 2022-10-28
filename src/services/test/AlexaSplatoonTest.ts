@@ -1,7 +1,7 @@
 import test from "ava";
 import * as dayjs from "dayjs";
 import { DateTime } from "../../utils/DateTime";
-import { AlexaSplatoon2 } from "../AlexaSplatoon";
+import { AlexaSplatoon2 } from "../AlexaSplatoon2";
 import { MockSpla2APIClient } from "./MockSpla2APIClient";
 
 const service = new AlexaSplatoon2(new MockSpla2APIClient());

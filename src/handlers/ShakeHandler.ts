@@ -11,7 +11,7 @@ export function ShakeIntent(splatoon: AlexaSplatoon3): RequestHandler {
       );
     },
     handle: async function ({ responseBuilder }) {
-      const shake = splatoon.shake();
+      const shake = await splatoon.shake();
       if (shake === null) {
         return responseBuilder
           .speak("あれ、シャケのルールが取得できてないよ")

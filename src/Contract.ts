@@ -17,7 +17,7 @@ export interface Splatoon3Matchies {
 }
 
 export interface BankaraMatch {
-  challen: Match;
+  challenge: Match;
   open: Match;
 }
 
