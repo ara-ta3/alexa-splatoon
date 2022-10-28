@@ -64,9 +64,9 @@ export function bankaraMatchText(
     cardTitle: `${begin}時 ~ ${end}時のバンカラマッチ`,
     cardText: [
       `${m.challenge.rule}`,
-      m.challenge.maps.map((x) => `- ${x}`).join("\n"),
+      m.challenge.maps.map((x) => `- ${x.name}`).join("\n"),
       `${m.open.rule}`,
-      m.open.maps.map((x) => `- ${x}`).join("\n"),
+      m.open.maps.map((x) => `- ${x.name}`).join("\n"),
     ].join("\n"),
     cardImage: randomImage(m),
   };

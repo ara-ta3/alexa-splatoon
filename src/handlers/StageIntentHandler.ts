@@ -21,7 +21,7 @@ export function StageIntentHandler(splatoon: AlexaSplatoon3): RequestHandler {
           .getResponse();
       }
       const { speakText, cardText, cardTitle, cardImage } = bankaraMatchText(
-        current.next(),
+        current,
         m
       );
       return responseBuilder
