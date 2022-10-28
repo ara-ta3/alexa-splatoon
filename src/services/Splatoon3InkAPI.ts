@@ -58,7 +58,22 @@ export class Splatoon3InkAPIClientImpl implements Splatoon3InkAPIClient {
     };
   }
   async getShake(): Promise<Shake[]> {
-    throw new Error("Method not implemented.");
+    const ss = await this.getSchedule();
+    const t = await this.getTranslation();
+    return ss.coopGroupingSchedule.regularSchedules.nodes.map((n) => {
+      return {
+        period: new Period(n.startTime, n.endTime),
+        stage: {
+          name: t.stages[n.setting.coopStage.id].name,
+          image: n.setting.coopStage.image.url,
+        },
+        weapons: n.setting.weapons.map((w) => {
+          return w.name === "Random"
+            ? "？"
+            : t.weapons[w.__splatoon3ink_id].name;
+        }),
+      };
+    });
   }
 
   private async getTranslation(): Promise<JPJA> {
