@@ -13,10 +13,12 @@ export interface Splatoon2Matchies {
 }
 
 export interface Splatoon3Matchies {
-  bankara: {
-    challenge: Match[];
-    open: Match[];
-  };
+  bankara: BankaraMatch[];
+}
+
+export interface BankaraMatch {
+  challen: Match;
+  open: Match;
 }
 
 export interface Match {
