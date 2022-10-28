@@ -14,8 +14,8 @@ test("stage() returns target rule", (t) => {
   const stage = service.stage(current, false);
   t.not(stage.gachi, undefined);
   t.not(stage.league, undefined);
-  t.is(stage.gachi.period.start.raw, dayjs("2020-12-31T07:00:00"));
-  t.is(stage.league.period.start.raw, dayjs("2020-12-31T07:00:00"));
+  t.deepEqual(stage.gachi.period.start.raw, dayjs("2020-12-31T07:00:00"));
+  t.deepEqual(stage.league.period.start.raw, dayjs("2020-12-31T07:00:00"));
 });
 
 test("stage() returns next target rule", (t) => {
@@ -23,8 +23,8 @@ test("stage() returns next target rule", (t) => {
   const stage = service.stage(current, true);
   t.not(stage.gachi, undefined);
   t.not(stage.league, undefined);
-  t.is(stage.gachi.period.start.raw, dayjs("2020-12-31T09:00:00"));
-  t.is(stage.league.period.start.raw, dayjs("2020-12-31T09:00:00"));
+  t.deepEqual(stage.gachi.period.start.raw, dayjs("2020-12-31T09:00:00"));
+  t.deepEqual(stage.league.period.start.raw, dayjs("2020-12-31T09:00:00"));
 });
 
 test("stage() returns undefined when target rule is empty", (t) => {
@@ -37,5 +37,5 @@ test("stage() returns undefined when target rule is empty", (t) => {
 test("shake() returns next rule", (t) => {
   const shake = service.shake();
   t.not(shake, null);
-  t.is(shake.period.start.raw, dayjs("2020-12-30T21:00:00"));
+  t.deepEqual(shake.period.start.raw, dayjs("2020-12-30T21:00:00"));
 });
