@@ -1,9 +1,9 @@
 import { RequestHandler } from "ask-sdk-core";
-import { AlexaSplatoon } from "../services/AlexaSplatoon";
+import { AlexaSplatoon2 } from "../services/AlexaSplatoon";
 import { gachiAndLeagueText } from "../SpeakText";
 import { DateTimeNow } from "../utils/DateTime";
 
-export function NextIntent(splatoon: AlexaSplatoon): RequestHandler {
+export function NextIntent(splatoon: AlexaSplatoon2): RequestHandler {
   return {
     canHandle: async function ({ requestEnvelope }) {
       return (
