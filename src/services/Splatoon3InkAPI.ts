@@ -94,7 +94,10 @@ export class Splatoon3InkAPIClientImpl implements Splatoon3InkAPIClient {
         method: "GET",
       })
     );
-    this.scheduleCache = await response.json();
+    const json: {
+      data: ScheduleData;
+    } = await response.json();
+    this.scheduleCache = json.data;
     return this.scheduleCache;
   }
 }
