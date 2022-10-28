@@ -30,12 +30,12 @@ export class Splatoon3InkAPIClientImpl implements Splatoon3InkAPIClient {
             rule: t.rules[chllenge.vsRule.id].name,
             maps: [
               {
-                name: t.stages[chllenge.vsStage[0].id].name,
-                image: chllenge.vsStage[0].image.url,
+                name: t.stages[chllenge.vsStages[0].id].name,
+                image: chllenge.vsStages[0].image.url,
               },
               {
-                name: t.stages[chllenge.vsStage[1].id].name,
-                image: chllenge.vsStage[1].image.url,
+                name: t.stages[chllenge.vsStages[1].id].name,
+                image: chllenge.vsStages[1].image.url,
               },
             ],
           },
@@ -44,12 +44,12 @@ export class Splatoon3InkAPIClientImpl implements Splatoon3InkAPIClient {
             rule: t.rules[open.vsRule.id].name,
             maps: [
               {
-                name: t.stages[open.vsStage[0].id].name,
-                image: open.vsStage[0].image.url,
+                name: t.stages[open.vsStages[0].id].name,
+                image: open.vsStages[0].image.url,
               },
               {
-                name: t.stages[open.vsStage[1].id].name,
-                image: open.vsStage[1].image.url,
+                name: t.stages[open.vsStages[1].id].name,
+                image: open.vsStages[1].image.url,
               },
             ],
           },
@@ -124,7 +124,7 @@ interface ScheduleData {
           rule: string;
           id: string;
         };
-        vsStage: {
+        vsStages: {
           id: string;
           image: {
             url: string;
