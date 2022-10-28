@@ -1,8 +1,8 @@
-import * as dayjs from "dayjs";
 import { RequestHandler } from "ask-sdk-core";
 import { AlexaSplatoon } from "../services/AlexaSplatoon";
-import { next, targetScheduleDates } from "../Util";
+import { targetScheduleDates } from "../Util";
 import { gachiText } from "../SpeakText";
+import { DateTime } from "../utils/DateTime";
 
 export function GachiIntent(splatoon: AlexaSplatoon): RequestHandler {
   return {
@@ -13,7 +13,7 @@ export function GachiIntent(splatoon: AlexaSplatoon): RequestHandler {
       );
     },
     handle: async function ({ responseBuilder }) {
-      const targets = targetScheduleDates(dayjs(), 4);
+      const targets = targetScheduleDates(new DateTime(), 4);
       const schedules = splatoon.gachi(targets);
       if (schedules.length === 0) {
         return responseBuilder.speak("あれれ、ガチマがないよ").getResponse();

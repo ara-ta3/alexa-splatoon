@@ -1,7 +1,7 @@
 import { RequestHandler } from "ask-sdk-core";
-import * as dayjs from "dayjs";
 import { AlexaSplatoon } from "../services/AlexaSplatoon";
 import { gachiAndLeagueText } from "../SpeakText";
+import { DateTimeNow } from "../utils/DateTime";
 
 export function StageIntentHandler(splatoon: AlexaSplatoon): RequestHandler {
   return {
@@ -12,7 +12,7 @@ export function StageIntentHandler(splatoon: AlexaSplatoon): RequestHandler {
       );
     },
     handle: async function ({ responseBuilder }) {
-      const current = dayjs();
+      const current = DateTimeNow();
       const { gachi, league } = splatoon.stage(current, false);
       if (gachi === undefined || league === undefined) {
         return responseBuilder
@@ -20,7 +20,7 @@ export function StageIntentHandler(splatoon: AlexaSplatoon): RequestHandler {
           .getResponse();
       }
       const { speakText, cardText, cardTitle, cardImage } = gachiAndLeagueText(
-        current,
+        DateTimeNow(),
         gachi,
         league
       );

@@ -1,7 +1,6 @@
-import * as dayjs from "dayjs";
 import * as mustache from "mustache";
-import { Schedule, ShakeSchedule } from "./services/Spla2API";
-import { stageRange } from "./Util";
+import { Shake, Match as DomainSchedule } from "./Contract";
+import { DateTime, DateTimeNow } from "./utils/DateTime";
 
 export interface AlexaResponse {
   speakText: string;
@@ -17,35 +16,27 @@ const shakeTextTemplate: string = `{{#heldNow}}
 シャケは{{startDay}}の{{startHour}}時からで
 {{/heldNow}}
 ステージは{{stageName}}だよ。
-武器は{{#weapons}}、{{name}}{{/weapons}}だよ
+武器は、{{weapons}}だよ
 `.replace(/(\r\n|\n|\r)/gm, "");
 
 export function shakeText(
-  shake: ShakeSchedule,
-  current: dayjs.Dayjs = dayjs()
+  shake: Shake,
+  current: DateTime = DateTimeNow()
 ): AlexaResponse {
-  const start = dayjs(shake.start);
-  const end = dayjs(shake.end);
-  const speakParams = {
-    heldNow: current.isAfter(start) && current.isBefore(end),
-    startDay: start.format("M月D日"),
-    startHour: start.format("H"),
+  const speakText = mustache.render(shakeTextTemplate, {
+    heldNow: shake.period.in(current),
+    startDay: shake.period.start.format("M月D日"),
+    startHour: shake.period.start.format("H"),
     stageName: shake.stage.name,
-    weapons: shake.weapons.map((w) => {
-      return {
-        name: w.name === "？" ? "はてな" : w.name,
-      };
-    }),
-  };
-
-  const speakText = mustache.render(shakeTextTemplate, speakParams);
+    weapons: shake.weapons.map((w) => (w === "？" ? "はてな" : w)).join("、"),
+  });
 
   return {
     speakText,
-    cardTitle: `${shake.stage.name} ${start.format("M/D H:00")} ~ ${end.format(
+    cardTitle: `${shake.stage.name} ${shake.period.start.format(
       "M/D H:00"
-    )}`,
-    cardText: shake.weapons.map((w) => `- ${w.name}`).join("\n"),
+    )} ~ ${shake.period.end.format("M/D H:00")}`,
+    cardText: shake.weapons.map((w) => `- ${w}`).join("\n"),
     cardImage: shake.stage.image,
   };
 }
@@ -61,28 +52,27 @@ const gachiAndLeagueTextTemplate: string = `{{#alreadyStarted}}
 `.replace(/(\r\n|\n|\r)/gm, "");
 
 export function gachiAndLeagueText(
-  currentTime: dayjs.Dayjs,
-  gachi: Schedule,
-  league: Schedule,
-  now: dayjs.Dayjs = dayjs()
+  targetTime: DateTime,
+  gachi: DomainSchedule,
+  league: DomainSchedule,
+  now: DateTime = DateTimeNow()
 ): AlexaResponse {
-  const [begin, end] = stageRange(currentTime);
-  const images = gachi.maps_ex
+  const [begin, end] = targetTime.stageRangeHour();
+  const images = gachi.maps
     .map((m) => m.image)
-    .concat(league.maps_ex.map((m) => m.image));
-  const params = {
-    alreadyStarted: now >= currentTime,
-    begin: begin,
-    end: end,
-    gachiRule: gachi.rule,
-    gachiMap1: gachi.maps[0],
-    gachiMap2: gachi.maps[1],
-    leagueRule: league.rule,
-    leagueMap1: league.maps[0],
-    leagueMap2: league.maps[1],
-  };
+    .concat(league.maps.map((m) => m.image));
   return {
-    speakText: mustache.render(gachiAndLeagueTextTemplate, params),
+    speakText: mustache.render(gachiAndLeagueTextTemplate, {
+      alreadyStarted: now.raw >= targetTime.raw,
+      begin: begin,
+      end: end,
+      gachiRule: gachi.rule,
+      gachiMap1: gachi.maps[0].name,
+      gachiMap2: gachi.maps[1].name,
+      leagueRule: league.rule,
+      leagueMap1: league.maps[0].name,
+      leagueMap2: league.maps[1].name,
+    }),
     cardTitle: `${begin}時 ~ ${end}時のガチマとリグマ`,
     cardText: [
       `${gachi.rule}`,
@@ -107,14 +97,14 @@ const schedulesSpeakTemplate: string = `
 だよ。
 `.replace(/(\r\n|\n|\r)/gm, "");
 
-export function gachiText(schedules: Schedule[]): AlexaResponse {
+export function gachiText(schedules: DomainSchedule[]): AlexaResponse {
   const scheduleParams = schedules.map((s) => {
     return {
       rule: s.rule,
-      begin: dayjs(s.start).format("H"),
-      end: dayjs(s.end).format("H"),
-      map1: s.maps[0],
-      map2: s.maps[1],
+      begin: s.period.start.format("H"),
+      end: s.period.end.format("H"),
+      map1: s.maps[0].name,
+      map2: s.maps[1].name,
     };
   });
   return {
