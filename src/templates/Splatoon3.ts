@@ -11,14 +11,14 @@ export interface AlexaResponse {
 
 const shakeTextTemplate: string = `
 シャケは{{startString}}から{{endString}}までで、
-ステージは{{stageName}}、
+ステージは{{stageName}}で、
 武器は、{{weapons}}だよ
 `.replace(/(\r\n|\n|\r)/gm, "");
 
 export function shakeText(shake: Shake): AlexaResponse {
   const speakText = mustache.render(shakeTextTemplate, {
     startString: shake.period.start.format("M月D日のH時"),
-    endString: shake.period.start.format("M月D日のH時"),
+    endString: shake.period.end.format("M月D日のH時"),
     stageName: shake.stage.name,
     weapons: shake.weapons.map((w) => (w === "？" ? "はてな" : w)).join("、"),
   });
