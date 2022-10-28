@@ -1,5 +1,5 @@
 import { RequestHandler } from "ask-sdk-core";
-import { AlexaSplatoon2 } from "../services/AlexaSplatoon";
+import { AlexaSplatoon2 } from "../services/AlexaSplatoon2";
 import { gachiAndLeagueText } from "../SpeakText";
 import { DateTimeNow } from "../utils/DateTime";
 
