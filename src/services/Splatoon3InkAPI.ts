@@ -78,7 +78,7 @@ export class Splatoon3InkAPIClientImpl implements Splatoon3InkAPIClient {
 
   private async getTranslation(): Promise<JPJA> {
     const response = await fetch(
-      "https://splatoon3.ink/data/ja-JP.json",
+      "https://splatoon3.ink/data/locale/ja-JP.json",
       Object.assign({
         method: "GET",
       })
