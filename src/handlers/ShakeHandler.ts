@@ -1,6 +1,5 @@
 import { RequestHandler } from "ask-sdk-core";
 import { AlexaSplatoon } from "../services/AlexaSplatoon";
-import { toDomainShake } from "../services/Spla2API";
 import { shakeText } from "../SpeakText";
 
 export function ShakeIntent(splatoon: AlexaSplatoon): RequestHandler {
@@ -18,9 +17,7 @@ export function ShakeIntent(splatoon: AlexaSplatoon): RequestHandler {
           .speak("あれ、シャケのルールが取得できてないよ")
           .getResponse();
       }
-      const { speakText, cardTitle, cardText, cardImage } = shakeText(
-        toDomainShake(shake)
-      );
+      const { speakText, cardTitle, cardText, cardImage } = shakeText(shake);
 
       return responseBuilder
         .speak(speakText)

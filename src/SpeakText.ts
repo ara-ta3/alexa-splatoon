@@ -1,5 +1,5 @@
 import * as mustache from "mustache";
-import { Shake, Schedule as DomainSchedule } from "./Contract";
+import { Shake, Match as DomainSchedule } from "./Contract";
 import { DateTime, DateTimeNow } from "./utils/DateTime";
 
 export interface AlexaResponse {

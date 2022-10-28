@@ -1,9 +1,7 @@
 import { RequestHandler } from "ask-sdk-core";
-import * as dayjs from "dayjs";
 import { AlexaSplatoon } from "../services/AlexaSplatoon";
 import { gachiAndLeagueText } from "../SpeakText";
 import { DateTimeNow } from "../utils/DateTime";
-import { toDomainSchedule } from "../services/Spla2API";
 
 export function NextIntent(splatoon: AlexaSplatoon): RequestHandler {
   return {
@@ -14,7 +12,7 @@ export function NextIntent(splatoon: AlexaSplatoon): RequestHandler {
       );
     },
     handle: async function ({ responseBuilder }) {
-      const current = dayjs();
+      const current = DateTimeNow();
       const { gachi, league } = splatoon.stage(current, true);
       if (gachi === undefined || league === undefined) {
         return responseBuilder
@@ -23,8 +21,8 @@ export function NextIntent(splatoon: AlexaSplatoon): RequestHandler {
       }
       const { speakText, cardText, cardTitle, cardImage } = gachiAndLeagueText(
         DateTimeNow().next(),
-        toDomainSchedule(gachi),
-        toDomainSchedule(league)
+        gachi,
+        league
       );
       return responseBuilder
         .speak(speakText)

@@ -1,10 +1,10 @@
 import fetch, { Response } from "node-fetch";
-import { Shake, Schedule as DomainSchedule } from "../Contract";
+import { Shake, Match as DomainSchedule, Splatoon2Matchies } from "../Contract";
 import { Period } from "../utils/Period";
 
 const APIEndpoint = "https://spla2.yuu26.com";
 
-export interface JsonResponseBody {
+interface JsonResponseBody {
   result: {
     regular: Array<Schedule>;
     gachi: Array<Schedule>;
@@ -12,7 +12,7 @@ export interface JsonResponseBody {
   };
 }
 
-export interface Schedule {
+interface Schedule {
   start: string;
   end: string;
   rule: string;
@@ -22,7 +22,7 @@ export interface Schedule {
   }[];
 }
 
-export function toDomainSchedule(s: Schedule): DomainSchedule {
+function toDomainSchedule(s: Schedule): DomainSchedule {
   return {
     period: new Period(s.start, s.end),
     rule: s.rule,
@@ -39,11 +39,11 @@ export function toDomainSchedule(s: Schedule): DomainSchedule {
   };
 }
 
-export interface ShakeResponseBody {
+interface ShakeResponseBody {
   result: ShakeSchedule[];
 }
 
-export interface ShakeSchedule {
+interface ShakeSchedule {
   start: string;
   end: string;
   stage: {
@@ -55,7 +55,7 @@ export interface ShakeSchedule {
   }[];
 }
 
-export function toDomainShake(shake: ShakeSchedule): Shake {
+function toDomainShake(shake: ShakeSchedule): Shake {
   return {
     period: new Period(shake.start, shake.end),
     stage: {
@@ -66,8 +66,8 @@ export function toDomainShake(shake: ShakeSchedule): Shake {
 }
 
 export interface Spla2APIClient {
-  getSchedule(): Promise<JsonResponseBody>;
-  getShake(): Promise<ShakeResponseBody>;
+  getSchedule(): Promise<Splatoon2Matchies>;
+  getShake(): Promise<Shake[]>;
 }
 
 export class Spla2APIClientImpl implements Spla2APIClient {
@@ -76,14 +76,20 @@ export class Spla2APIClientImpl implements Spla2APIClient {
     this.userAgent = userAgent;
   }
 
-  async getSchedule(): Promise<JsonResponseBody> {
+  async getSchedule(): Promise<Splatoon2Matchies> {
     const response = await this.get(`${APIEndpoint}/schedule`);
-    return response.json();
+    const json: JsonResponseBody = await response.json();
+    return {
+      regular: json.result.regular.map(toDomainSchedule),
+      gachi: json.result.gachi.map(toDomainSchedule),
+      league: json.result.league.map(toDomainSchedule),
+    };
   }
 
-  async getShake(): Promise<ShakeResponseBody> {
+  async getShake(): Promise<Shake[]> {
     const response = await this.get(`${APIEndpoint}/coop/schedule`);
-    return response.json();
+    const json: ShakeResponseBody = await response.json();
+    return json.result.map((x) => toDomainShake(x));
   }
 
   private async get(url: string): Promise<Response> {

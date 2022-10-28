@@ -6,7 +6,13 @@ export interface Shake {
   weapons: string[];
 }
 
-export interface Schedule {
+export interface Splatoon2Matchies {
+  regular: Match[];
+  gachi: Match[];
+  league: Match[];
+}
+
+export interface Match {
   period: Period;
   rule: string;
   maps: [Stage, Stage];
