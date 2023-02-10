@@ -19,7 +19,7 @@
   "homepage": "https://github.com/ara-ta3/alexa-splatoon#readme",
   "dependencies": {
     "ask-sdk-core": "^2.12.1",
-    "ask-sdk-model": "^1.47.0",
+    "ask-sdk-model": "^1.48.0",
     "ask-sdk-runtime": "^2.12.0",
     "dayjs": "^1.11.7",
     "mustache": "^4.2.0",
