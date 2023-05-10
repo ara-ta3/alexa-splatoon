@@ -23,7 +23,7 @@
     "ask-sdk-runtime": "^2.14.0",
     "dayjs": "^1.11.7",
     "mustache": "^4.2.0",
-    "node-fetch": "^2.6.10"
+    "node-fetch": "^2.6.11"
   },
   "devDependencies": {
     "@types/mustache": "^4.2.2",
