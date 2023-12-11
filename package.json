@@ -32,7 +32,7 @@
     "ansi-regex": ">=6.0.1",
     "ava": "^6.0.1",
     "prettier": "^3.1.1",
-    "ts-node": "^10.9.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   },
   "ava": {
